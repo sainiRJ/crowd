@@ -30,7 +30,7 @@ def postVerify
                 session.delete(:mailOTP)
                 session.delete(:user)
                 flash[:success] = "Yor are create registration successfully"
-                redirect_to user_login_path
+                redirect_to login_path
 
             else
                 flash[:danger] = user.errors.full_messages
@@ -53,7 +53,7 @@ end
             token = ::JsonWebToken.encode(payload)
             session[:token] = token
             flash[:success] = "you are login successfully"
-            redirect_to profile_path
+            redirect_to index_path
         end
     end
 
@@ -79,23 +79,50 @@ end
           friend.friend_requests_received << @current_user.id
           @current_user.save
           friend.save
-          redirect_to user_path(friend), notice: 'Friend request sent!'
+          flash[:success] =  'Friend request sent!'
+          redirect_to index_path
         else
           flash[:error] = "Friend request already sent."
           redirect_back(fallback_location: root_path)
         end
       end
 
-  def accept_friend_request
-    friend = User.find(params[:id])
-    @current_user.friends << friend.id
-    friend.friends << @current_user.id
-    @current_user.friend_requests_received.delete(friend.id)
-    friend.friend_requests_sent.delete(@current_user.id)
-    @current_user.save
-    friend.save
-    redirect_to user_path(friend), notice: 'Friend request accepted!'
-  end
+      def accept_friend_request
+        friend = User.find_by(id: params[:id])
+    
+        if friend.nil?
+          flash[:error] = "User not found."
+          redirect_back(fallback_location: root_path)
+          return
+        end
+    
+        unless @current_user.friends
+          @current_user.friends = []
+        end
+    
+        unless friend.friends
+          friend.friends = []
+        end
+    
+        if @current_user.friend_requests_received.include?(friend.id)
+          @current_user.friends << friend.id
+          friend.friends << @current_user.id
+    
+          # Remove friend from friend_requests_received
+          @current_user.friend_requests_received.delete(friend.id)
+          
+          # Remove current_user from friend_requests_sent
+          friend.friend_requests_sent.delete(current_user.id)
+    
+          @current_user.save
+          friend.save
+          redirect_to user_path(friend), notice: 'Friend request accepted!'
+        else
+          flash[:error] = "No pending friend request from this user."
+          redirect_back(fallback_location: root_path)
+        end
+      end
+    
 
   def decline_friend_request
     friend = User.find(params[:id])
@@ -109,8 +136,8 @@ end
 
     
     def index
-        user = User.all
         @users = User.where.not(id: @current_user.id)
+        @user = @current_user
     end
 
     

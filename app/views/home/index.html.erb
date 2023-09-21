@@ -1,0 +1,15 @@
+<div style="text-align: center;">
+    <h2>Chat Application</h2>
+  
+    <%= form_for @message do |form| %>
+      <%= form.label :content, 'Type a message' %>
+      <%= form.text_field :content, required: true, data: { message: true } %>
+    <% end %>
+  
+    <!-- Dummy message we will be using this to create a new message -->
+    <p id="dummy_message"></p>
+  
+    <div id="messages">
+      <%= render @messages %>
+    </div>
+  </div>

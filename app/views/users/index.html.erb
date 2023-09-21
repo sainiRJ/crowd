@@ -1,14 +1,39 @@
 <h1>All Users</h1>
+<% if flash.any? %>
+    <% flash.each do |type, msg| %>
+      <div class="alert alert-<%= type %> text-center">
+        <%= msg %>
+      </div>
+    <% end %>
+  <% end %>
 <ul>
   <% @users.each do |user| %>
     <li>
       <%= user.name %>
-      <%= link_to 'Send Friend Request', send_friend_request_user_path(user), method: :post %>
-
     <%= link_to 'Send Friend Request', send_friend_request_user_path(user), method: :post  %>
     <%= link_to 'Accept Friend Request', accept_friend_request_user_path(user), method: :post  %>
     <%= link_to 'Decline Friend Request', decline_friend_request_user_path(user), method: :post  %>
+      <br>
+    <% if @current_user != user && !@current_user.friend_with?(user) %>
+  <%= form_for Friendship.new, url: friendships_path, method: :post do |f| %>
+    <%= f.hidden_field :friend_id, value: @user.id %>
+    <%= f.submit "Send Friend Request", class: "btn btn-primary" %>
+  <% end %>
+<% end %>
 
     </li>
   <% end %>
 </ul>
+
+
+
+<% if @current_user == @user %>
+  <h2>Pending Friend Requests:</h2>
+  <% @user.pending_friend_requests.each do |request| %>
+    <div class="friend-request">
+      <%= request.user.name %> wants to be your friend!
+      <%= link_to "Accept", friendship_path(request, accept: true), method: :patch %>
+      <%= link_to "Decline", friendship_path(request, accept: false), method: :patch %>
+    </div>
+  <% end %>
+<% end %>

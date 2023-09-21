@@ -1,11 +1,16 @@
 Rails.application.routes.draw do
+  get 'rooms/index'
+  get 'home/index'
+  get 'friendships/new'
+  get 'friendships/create'
+  get 'friendships/update'
+  get 'friendships/show'
   get 'profile/profile'
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 
   # Defines the root path route ("/")
   # root "articles#index"
-  resources :users
-    root "users#new"
+  # resources :users
 
   get '/register', to: 'users#new'
   post '/register', to: 'users#create'
@@ -18,6 +23,8 @@ Rails.application.routes.draw do
   post '/login', to: 'users#login'
 
   get '/index', to: 'users#index'
+
+  get '/chat', to: 'chats#index'
 
   resources :users do
     member do
@@ -33,7 +40,24 @@ Rails.application.routes.draw do
     end
   end
 
+  resources :friendships, only: [:create, :update]
+
   post '/send/friend/request/user', to: 'users#send_friend_request'
+
+root 'rooms#index'
+post 'chat/create', to: 'chat#create'
+
+get '/signin', to: 'sessions#new'
+post '/signin', to: 'sessions#create'
+delete '/signout', to: 'sessions#destroy'
+
+resources :rooms
+  resources :users
+
+  
+resources :rooms do
+  resources :messages
+end
 
 
 end
