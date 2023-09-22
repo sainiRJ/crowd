@@ -7,6 +7,7 @@ ruby "3.2.2"
 gem "rails", "~> 7.0.8"
 
 gem 'jwt'
+gem 'sassc'
 
 gem 'jquery-rails'
 gem 'jquery-ui-rails'
@@ -17,7 +18,6 @@ gem 'securerandom'
 
 gem 'dotenv-rails', groups: [:development, :test]
 
-gem 'jquery-rails'
 gem 'select2-rails'
 
 

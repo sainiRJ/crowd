@@ -11,6 +11,5 @@
 //= require jquery
 //= require jquery-ui
 
- //= link channels/chat_channel.js
+//= link channels/chat_channel.js
 
-//

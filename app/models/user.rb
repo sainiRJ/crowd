@@ -4,6 +4,8 @@ class User < ApplicationRecord
     has_secure_password
     has_one :profile
     has_many :messages
+    has_many :posts
+
     # serialize :friend_requests_sent, Array
     # serialize :friend_requests_received, Array
     # serialize :friends, Array

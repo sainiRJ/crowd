@@ -26,6 +26,18 @@ Rails.application.routes.draw do
 
   get '/chat', to: 'chats#index'
 
+  get '/user/post', to: 'posts#new'
+
+  post '/user/post', to: 'posts#create'
+  get 'user/show', to: 'posts#show'
+
+  # config/routes.rb
+resources :posts do
+  resources :comments, only: [:create, :destroy]
+end
+
+ 
+
   resources :users do
     member do
       post 'send_friend_request'

@@ -1,0 +1,34 @@
+
+<style>
+    .customer-review{
+        margin-bottom: 50px;
+        margin-left: 30px;
+    }
+
+    .flex-container {
+        display: flex;
+      }
+
+
+      .review-image {
+        width: 300px ; /* Adjust the desired width */
+        height: 200px ; /* Adjust the desired height */
+      }
+      
+</style>
+
+        <% @posts.each do |post| %>
+        <div class="container">
+        <div class="customer-review">
+            <div class="row">
+                <div class="col">
+            <h5><%=post.title %> </h5>
+            <%= image_tag(post.file, class: 'review-image') %>
+            
+            <%= render partial: 'comments/comment', locals: { post: post } %>
+        </div>
+        </div>
+          </div>
+        </div>
+        </div>
+        <% end %>
