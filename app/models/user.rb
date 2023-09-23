@@ -5,6 +5,7 @@ class User < ApplicationRecord
     has_one :profile
     has_many :messages
     has_many :posts
+    has_many :likes, dependent: :destroy
 
     # serialize :friend_requests_sent, Array
     # serialize :friend_requests_received, Array

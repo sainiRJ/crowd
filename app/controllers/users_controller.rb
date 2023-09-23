@@ -171,6 +171,6 @@ end
       end 
 
     def user_params 
-        params.require(:user).permit(:name, :mobile_number, :email, :gender, :password, :password_confirmation, :bithday)
+        params.require(:user).permit(:name, :mobile_number, :mobile_number, :email, :gender, :password, :password_confirmation, :birthday)
     end 
 end

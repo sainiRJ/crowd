@@ -1,11 +1,13 @@
 Rails.application.routes.draw do
-  get 'rooms/index'
-  get 'home/index'
-  get 'friendships/new'
-  get 'friendships/create'
-  get 'friendships/update'
-  get 'friendships/show'
-  get 'profile/profile'
+  # get 'likes/create'
+  # get 'likes/destroy'
+  # get 'rooms/index'
+  # get 'home/index'
+  # get 'friendships/new'
+  # get 'friendships/create'
+  # get 'friendships/update'
+  # get 'friendships/show'
+  # get 'profile/profile'
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 
   # Defines the root path route ("/")
@@ -18,6 +20,8 @@ Rails.application.routes.draw do
   post '/user/verify', to: 'users#postVerify'
   get '/profile', to: 'profiles#new'
   post '/profile', to: 'profiles#create'
+  get '/profile/show', to: 'profiles#show'
+
   get '/user', to: 'users#user'
   get '/login', to: 'users#login_form'
   post '/login', to: 'users#login'
@@ -29,11 +33,14 @@ Rails.application.routes.draw do
   get '/user/post', to: 'posts#new'
 
   post '/user/post', to: 'posts#create'
-  get 'user/show', to: 'posts#show'
+  get '/user/show', to: 'posts#show'
+  get '/user/search', to: 'search#index'
 
   # config/routes.rb
 resources :posts do
   resources :comments, only: [:create, :destroy]
+  resources :likes
+
 end
 
  
@@ -56,7 +63,10 @@ end
 
   post '/send/friend/request/user', to: 'users#send_friend_request'
 
-root 'rooms#index'
+root 'users#login_form'
+
+get '/room', to: 'rooms#index'
+  post '/romm', to: 'rooms#index'
 post 'chat/create', to: 'chat#create'
 
 get '/signin', to: 'sessions#new'
@@ -70,6 +80,7 @@ resources :rooms
 resources :rooms do
   resources :messages
 end
+
 
 
 end

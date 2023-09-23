@@ -16,6 +16,7 @@ class ProfilesController < ApplicationController
   if @profile.save
     @profile.profile_photo = url_for(@profile.file)
     @profile.cover_photo = url_for(@profile.video_file)
+    puts "this is url #{url_for(@profile.video_file)}"
     @profile.save
  
       flash[:success] = "profile upload successfully"
@@ -24,6 +25,11 @@ class ProfilesController < ApplicationController
       flash[:error] = @profile.errors.full_messages
       redirect_to profile_path
     end
+  end
+
+  def show
+    @profile = @current_user.profile
+    @posts = Post.all
   end
 
     def authenticate_user

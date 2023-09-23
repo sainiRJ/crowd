@@ -1,34 +1,70 @@
 
 <style>
     .customer-review{
-        margin-bottom: 50px;
-        margin-left: 30px;
+        margin-left: 4%;
     }
 
-    .flex-container {
-        display: flex;
-      }
 
 
       .review-image {
         width: 300px ; /* Adjust the desired width */
         height: 200px ; /* Adjust the desired height */
       }
+
+      .like-button {
+        transform: translate(0, -40%);
+        margin-left: 4%;
+        transition: background-color 0.3s ease;
+        background-color: transparent;
+        border: none;
+        color: #3498db;
+        font-weight: bold;
+        cursor: pointer;
+      }
+      
+      .like-button:hover {
+        text-decoration: underline;
+      }
+      
+      .search{
+        margin-top: 4%;
+        margin-left: 60%;
+        
+       
+      }
       
 </style>
-
+<% if flash.any? %>
+<% flash.each do |type, msg| %>
+  <div class="alert alert-<%= type %> text-center">
+    <%= msg %>
+  </div>
+<% end %>
+<% end %>
+        <div class="search">
+        <%= form_tag user_search_path, :method => "get" do %>
+          <%= label_tag(:search, "Search the user") %>
+          <%= text_field_tag :search, params[:search] %>
+          <%= submit_tag("Search", :name => nil) %>
+        <% end %>
+      </div>
         <% @posts.each do |post| %>
-        <div class="container">
         <div class="customer-review">
             <div class="row">
                 <div class="col">
             <h5><%=post.title %> </h5>
             <%= image_tag(post.file, class: 'review-image') %>
-            
-            <%= render partial: 'comments/comment', locals: { post: post } %>
+            <p><%= post.likes.count %> <%= (post.likes.count) == 1 ? 'Like' : 'Likes'%></p>
         </div>
         </div>
           </div>
-        </div>
-        </div>
+          <% pre_like = post.likes.find { |like| like.user_id == @current_user.id} %>
+          <% if pre_like %>
+            <%= button_to 'Unlike', post_like_path(post, pre_like), method: :delete, class: "like-button" %>
+          <% else %>
+            <%= button_to 'Like', post_likes_path(post), method: :post, class: "like-button" %>
+          <% end %>
+          <div class="comments">
+          <%= render partial: 'comments/comment', locals: { post: post } %>
+          </div>
         <% end %>
