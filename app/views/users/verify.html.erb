@@ -1,0 +1,19 @@
+<h1>OTP Verification</h1>
+<% if flash.any? %>
+<% flash.each do |type, msg| %>
+<div class="alert alert-<%= type %> text-center" >
+<%= msg %>
+</div>
+<% end %>
+<% end %>
+<%= form_tag user_verify_path, method: :post do %>
+<div class="form-container">
+  <div class="form-group">
+    <%= label_tag :mailOTP, "Enter MAIL-OTP:" %>
+    <%= text_field_tag :mailOTP, nil, class: "form-control" %>
+  </div>
+  <%= submit_tag "Verify OTP", class: "btn btn-primary" %>
+</div>
+<% end %>
+  
+

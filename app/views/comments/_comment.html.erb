@@ -1,0 +1,46 @@
+<style>
+ 
+  .comment-section {
+  margin-left: 10%;
+  transform: translate(0, -100%);
+  }
+  
+  /* Style the comment input field */
+  .comment-input {
+    display: flex;
+    padding-top: 10px;
+  }
+  
+  .comment-textarea {
+    width: 92%;
+    height: 30px;
+    border-radius: 5px;
+    resize: none;
+    font-size: 14px;
+  }
+  
+  .comment-submit {
+    background-color: transparent;
+    border: none;
+    color: #3498db;
+    font-weight: bold;
+    cursor: pointer;
+    transform: translate(0, -40%);
+
+  }
+  
+  .comment-submit:hover {
+    text-decoration: underline;
+
+  }
+  
+</style>
+
+<div class="comment-section">
+  <div class="comment-input">
+<%= form_with(model: [post, Comment.new], local: true) do |form| %>
+  <%= form.text_area :text, class: 'comment-textarea' %>
+  <%= form.submit "Comment", class: 'comment-submit' %>
+<% end %>
+</div>
+</div>

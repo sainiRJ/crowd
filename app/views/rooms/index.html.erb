@@ -1,0 +1,50 @@
+<style>
+  body {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 10px;
+    min-height: 100vh;
+  }
+</style>
+
+<div class="row">
+  <div class="col-md-6">
+    <h5> Hi <%= @current_user.name %> </h5>
+    <h4> Users </h4>
+    <div>
+      <%= turbo_stream_from "users" %>
+      <div id="users">
+        <%= render @users %>
+      </div>
+    </div>
+    <h4> Rooms </h4>
+    <%= form_with(model: @room, remote: true, class: "d-flex" ) do |f| %>
+    <%= f.text_field :name, class: "form-control", autocomplete: 'off' %>
+    <%= f.submit data: { disable_with: false } %>
+  <% end %>
+    <div>
+      <%= turbo_stream_from "rooms" %>
+      <div id="rooms">
+        <%= render @rooms %>
+  <%= link_to 'Sign Out', signout_path,  :method => :delete %> 
+
+      </div>
+    </div>
+  </div>
+  <div class="col-md-10 bg-dark text-light">
+    <% if @single_room %>
+      <h4 class="text-center"> <%=@user&.name || @single_room.name %> </h4>
+    <% end %>
+    <%= turbo_stream_from @single_room %>
+    <div id="messages">
+      <% if @messages.present? %>
+        <%= render @messages %>
+      <% end %>
+    </div>  
+    <% if @message.present? %>
+    <%= render partial: 'layouts/new_message_form' %> 
+    <% end %>
+  </div>
+
+</div>
